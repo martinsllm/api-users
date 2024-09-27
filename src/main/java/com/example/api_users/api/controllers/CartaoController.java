@@ -2,9 +2,7 @@ package com.example.api_users.api.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.example.api_users.business.services.CartaoService;
 import com.example.api_users.domain.dto.CartaoDTO;
 import jakarta.validation.Valid;
@@ -20,6 +18,11 @@ public class CartaoController {
     @PostMapping()
     public ResponseEntity<CartaoDTO> register(@RequestBody @Valid CartaoDTO cartao) {
         return ResponseEntity.ok(cartaoService.registrarCartao(cartao));
+    }
+
+    @PostMapping("/validar")
+    public ResponseEntity<String> validarCartao(@RequestBody @Valid CartaoDTO cartao) {
+        return ResponseEntity.ok(cartaoService.validarCartao(cartao.getNumeroCartao()));
     }
     
 }
