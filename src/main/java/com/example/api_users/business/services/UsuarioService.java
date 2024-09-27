@@ -1,5 +1,6 @@
 package com.example.api_users.business.services;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import com.example.api_users.business.converter.UsuarioConverter;
 import com.example.api_users.domain.dto.UsuarioDTO;
@@ -31,7 +32,16 @@ public class UsuarioService {
         } catch(ConflictException e) {
             throw new ConflictException(e.getMessage());
         } catch(Exception e) {
-            throw new BusinessException("Erro ao cadastrar usuario", e);
+            throw new BusinessException("Erro ao cadastrar usuário", e);
+        }
+    }
+
+    public List<UsuarioDTO> buscaTodosUsuarios() {
+        try {
+            List<UsuarioEntity> usuarios = usuarioRepository.findAll();
+            return usuarioConverter.paraListaDeUsuariosDTO(usuarios);
+        } catch (Exception e) {
+            throw new BusinessException("Erro ao buscar usuários", e);
         }
     }
     

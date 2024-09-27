@@ -1,5 +1,6 @@
 package com.example.api_users.business.converter;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
 import com.example.api_users.domain.dto.EnderecoDTO;
 import com.example.api_users.domain.dto.UsuarioDTO;
@@ -49,6 +50,10 @@ public class UsuarioConverter {
             .cep(endereco.getCep())
             .cidade(endereco.getCidade())
             .build();
+    }
+
+    public List<UsuarioDTO> paraListaDeUsuariosDTO(List<UsuarioEntity> usuarios) {
+        return usuarios.stream().map(this::paraUsuarioDTO).toList();
     }
     
 }

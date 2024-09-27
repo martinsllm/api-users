@@ -1,10 +1,9 @@
 package com.example.api_users.api.controllers;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.example.api_users.business.services.UsuarioService;
 import com.example.api_users.domain.dto.UsuarioDTO;
 import jakarta.validation.Valid;
@@ -20,6 +19,11 @@ public class UsuarioController {
     @PostMapping()
     public ResponseEntity<UsuarioDTO> register(@RequestBody @Valid UsuarioDTO usuario) {
         return ResponseEntity.ok(usuarioService.registrarUsuario(usuario));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UsuarioDTO>> listaTodosUsuarios() {
+        return ResponseEntity.ok(usuarioService.buscaTodosUsuarios());
     }
     
 }
