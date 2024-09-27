@@ -4,8 +4,7 @@ import org.springframework.stereotype.Service;
 import com.example.api_users.business.converter.UsuarioConverter;
 import com.example.api_users.domain.dto.UsuarioDTO;
 import com.example.api_users.domain.entities.UsuarioEntity;
-import com.example.api_users.infraestructure.exceptions.BusinessException;
-import com.example.api_users.infraestructure.exceptions.ConflictException;
+import com.example.api_users.infraestructure.exceptions.*;
 import com.example.api_users.infraestructure.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 

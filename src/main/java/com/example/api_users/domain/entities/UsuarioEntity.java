@@ -17,12 +17,16 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nome", nullable = false)
     private String nome;
 
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    private String cpf;
+    @Column(name = "cpf", nullable = false)
+    private String cpf; 
 
+    @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
 
     @OneToOne(cascade = CascadeType.ALL)
