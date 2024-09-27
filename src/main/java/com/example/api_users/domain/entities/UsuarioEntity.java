@@ -1,7 +1,6 @@
 package com.example.api_users.domain.entities;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 import lombok.*;
 
