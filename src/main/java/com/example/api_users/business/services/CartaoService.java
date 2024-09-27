@@ -35,12 +35,14 @@ public class CartaoService {
         }
     }
 
-    public String validarCartao(String numeroCartao) {
+    public String validarCartao(CartaoDTO cartao) {
         try {
-            CartaoEntity cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
-            notNull(cartao, "Cartão não identificado");
+            CartaoEntity cartaoEntity = cartaoRepository.findByNumeroCartao(cartao.getNumeroCartao());
+            notNull(cartaoEntity, "Cartão não identificado");
 
-            if(cartao.getAtivo().equals(true)) return "Cartão válido";
+            if(cartaoEntity.getAtivo().equals(true) && cartaoEntity.getCvv().equals(cartao.getCvv())) {
+                return "Cartão válido";
+            }
 
             return "Cartão inválido";
         } catch (IllegalArgumentException e) {
