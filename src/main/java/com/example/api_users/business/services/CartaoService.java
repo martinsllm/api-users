@@ -9,7 +9,6 @@ import com.example.api_users.domain.entities.UsuarioEntity;
 import com.example.api_users.infraestructure.exceptions.BusinessException;
 import com.example.api_users.infraestructure.exceptions.UnprocessableEntityException;
 import com.example.api_users.infraestructure.repositories.CartaoRepository;
-import com.example.api_users.infraestructure.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -17,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 public class CartaoService {
 
     private final CartaoRepository cartaoRepository;
-    private final UsuarioRepository usuarioRepository;
     private final CartaoConverter cartaoConverter;
+    private final UsuarioService usuarioService;
 
     private CartaoEntity salvarCartao(CartaoEntity cartao) {
         return cartaoRepository.saveAndFlush(cartao);
@@ -26,18 +25,26 @@ public class CartaoService {
 
     public CartaoDTO registrarCartao(CartaoDTO cartao) {
         try {
-            UsuarioEntity usuarioEntity = usuarioRepository.getReferenceById(cartao.getUsuarioId());
-            CartaoEntity cartaoEntity = cartaoConverter.paraCartaoEntity(cartao, usuarioEntity);
-
-            return cartaoConverter.paraCartaoDTO(salvarCartao(cartaoEntity), usuarioEntity);
+            UsuarioEntity usuario = usuarioService.buscaUsuario(cartao.getUsuarioId());
+            CartaoEntity cartaoEntity = cartaoConverter.paraCartaoEntity(cartao, usuario);
+            return cartaoConverter.paraCartaoDTO(salvarCartao(cartaoEntity), usuario);
         } catch (Exception e) {
            throw new BusinessException("Erro ao cadastrar cartão", e);
         }
     }
 
+    public CartaoEntity buscaCartao(String numeroCartao) {
+        try {
+            CartaoEntity cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+            return cartao;
+        } catch (Exception e) {
+            throw new BusinessException("Erro ao buscar cartão", e);
+        }
+    }
+
     public String validarCartao(CartaoDTO cartao) {
         try {
-            CartaoEntity cartaoEntity = cartaoRepository.findByNumeroCartao(cartao.getNumeroCartao());
+            CartaoEntity cartaoEntity = buscaCartao(cartao.getNumeroCartao());
             notNull(cartaoEntity, "Cartão não identificado");
 
             if(cartaoEntity.getAtivo().equals(true) && cartaoEntity.getCvv().equals(cartao.getCvv())) {
@@ -47,10 +54,10 @@ public class CartaoService {
             return "Cartão inválido";
         } catch (IllegalArgumentException e) {
             throw new UnprocessableEntityException(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new BusinessException("Erro ao validar cartão", e);
         }
     }
-    
+
     
 }

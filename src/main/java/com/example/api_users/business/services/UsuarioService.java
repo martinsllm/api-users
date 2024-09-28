@@ -44,5 +44,14 @@ public class UsuarioService {
             throw new BusinessException("Erro ao buscar usuários", e);
         }
     }
+
+    public UsuarioEntity buscaUsuario(Long id) {
+        try {
+            UsuarioEntity usuario = usuarioRepository.getReferenceById(id);
+            return usuario;
+        } catch (Exception e) {
+            throw new BusinessException("Erro ao buscar usuário", e);
+        }
+    }
     
 }
