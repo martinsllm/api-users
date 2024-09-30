@@ -7,6 +7,7 @@ import com.example.api_users.domain.dto.CartaoDTO;
 import com.example.api_users.domain.entities.CartaoEntity;
 import com.example.api_users.domain.entities.UsuarioEntity;
 import com.example.api_users.infraestructure.exceptions.BusinessException;
+import com.example.api_users.infraestructure.exceptions.ConflictException;
 import com.example.api_users.infraestructure.exceptions.UnprocessableEntityException;
 import com.example.api_users.infraestructure.repositories.CartaoRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +26,16 @@ public class CartaoService {
 
     public CartaoDTO registrarCartao(CartaoDTO cartao) {
         try {
+            Boolean cartaoExiste = cartaoRepository.existsByUsuarioId(cartao.getUsuarioId());
+            if(cartaoExiste.equals(true)){
+                throw new ConflictException("Já existe cartão registrado para este usuário!");
+            }
             UsuarioEntity usuario = usuarioService.buscaUsuario(cartao.getUsuarioId());
             CartaoEntity cartaoEntity = cartaoConverter.paraCartaoEntity(cartao, usuario);
             return cartaoConverter.paraCartaoDTO(salvarCartao(cartaoEntity), usuario);
-        } catch (Exception e) {
+        } catch (ConflictException e) {
+           throw new ConflictException(e.getMessage());
+        }catch (Exception e) {
            throw new BusinessException("Erro ao cadastrar cartão", e);
         }
     }

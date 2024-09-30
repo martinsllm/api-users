@@ -5,6 +5,8 @@ import com.example.api_users.domain.entities.CartaoEntity;
 
 
 public interface CartaoRepository extends JpaRepository<CartaoEntity, Long> {
+
+    Boolean existsByUsuarioId(Long usuarioId);
     
     CartaoEntity findByNumeroCartao(String numeroCartao);
 }

@@ -2,7 +2,6 @@ package com.example.api_users.business.converter;
 
 import org.springframework.stereotype.Component;
 import com.example.api_users.domain.dto.CartaoDTO;
-
 import com.example.api_users.domain.entities.CartaoEntity;
 import com.example.api_users.domain.entities.UsuarioEntity;
 import lombok.RequiredArgsConstructor;
