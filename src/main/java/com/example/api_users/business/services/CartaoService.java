@@ -49,16 +49,16 @@ public class CartaoService {
         }
     }
 
-    public String validarCartao(CartaoDTO cartao) {
+    public Boolean validarCartao(CartaoDTO cartao) {
         try {
             CartaoEntity cartaoEntity = buscaCartao(cartao.getNumeroCartao());
             notNull(cartaoEntity, "Cartão não identificado");
 
             if(cartaoEntity.getAtivo().equals(true) && cartaoEntity.getCvv().equals(cartao.getCvv())) {
-                return "Cartão válido";
+                return true;
             }
 
-            return "Cartão inválido";
+            return false;
         } catch (IllegalArgumentException e) {
             throw new UnprocessableEntityException(e.getMessage());
         } catch (Exception e) {
